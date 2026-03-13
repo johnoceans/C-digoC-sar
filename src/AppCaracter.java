@@ -9,18 +9,16 @@ public class AppCaracter {
     public static void main(String[] args) throws Exception {
         Scanner scan = new Scanner(System.in);
 
-        // Pedimos archivo de entrada
-        System.out.print("Nombre del archivo de entrada: ");
-        String archivoEntrada = scan.nextLine();
-
         // Declaramos el objeto de tipo File que referencia al fichero de entrada
-        File ficheroEntrada = new File(archivoEntrada);
+        File ficheroEntrada;
+        String archivoEntrada;
 
+        // Pedimos archivo de entrada
         do {
-            System.out.print("Nombre del archivo de entrada (tiene que estar en 'src/ficheros/'): ");
+            System.out.print("Nombre del archivo de entrada (ruta completa sin comillas): ");
             archivoEntrada = scan.nextLine();
 
-            ficheroEntrada = new File("src/ficheros/" + archivoEntrada);
+            ficheroEntrada = new File(archivoEntrada);
 
             if (!ficheroEntrada.exists()) {
                 System.out.println("El archivo no existe. Inténtalo de nuevo.");
@@ -33,21 +31,34 @@ public class AppCaracter {
         FileReader lector = new FileReader(ficheroEntrada);
 
         // Pedir desplazamiento
-        System.out.print("Introduce el desplazamiento (-25 a 25 siguiendo la tabla ACSII): ");
-        int desplazamiento = scan.nextInt();
-        scan.nextLine();
+        int desplazamiento;
+        do {
+            System.out.print("Introduce el desplazamiento (-25 a 25 siguiendo la tabla ASCII): ");
+            desplazamiento = scan.nextInt();
+            scan.nextLine();
 
-        if (desplazamiento < -25 || desplazamiento > 25) {
-            System.out.println("El desplazamiento debe estar entre -25 y 25 siguiendo la tabla ASCII.");
-            return;
-        }
+            if (desplazamiento < -25 || desplazamiento > 25) {
+                System.out.println("Desplazamiento inválido. Inténtalo de nuevo.");
+            }
 
-        // Pedimos archivo de salida
-        System.out.print("Nombre del archivo de salida: ");
-        String archivoSalida = scan.nextLine();
+        } while (desplazamiento < -25 || desplazamiento > 25);
 
         // Declaramos el objeto de tipo File que referencia al fichero de entrada
-        File ficheroSalida = new File(archivoSalida);
+        String archivoSalida;
+        File ficheroSalida;
+
+        // Pedimos archivo de salida
+        do {
+            System.out.print("Nombre del archivo de salida (debe ser ruta absoluta y no existir): ");
+            archivoSalida = scan.nextLine();
+
+            ficheroSalida = new File(archivoSalida);
+
+            if (ficheroSalida.exists()) {
+                System.out.println("El archivo ya existe. Inténtalo con otro nombre.");
+            }
+
+        } while (ficheroSalida.exists());
 
         // Creamos el archivo de salida
         // SI NO EXISTE, LO CREA
@@ -62,7 +73,7 @@ public class AppCaracter {
 
             char caracter = (char) caracterInt;
 
-            if (caracter >= '!') {
+            if (caracter >= 33) { // ACII de '!'
                 char desplazado = (char) (caracter + desplazamiento);
                 System.out.print(desplazado);
                 escritor.write(desplazado);
