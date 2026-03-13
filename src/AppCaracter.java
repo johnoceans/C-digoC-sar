@@ -16,10 +16,17 @@ public class AppCaracter {
         // Declaramos el objeto de tipo File que referencia al fichero de entrada
         File ficheroEntrada = new File(archivoEntrada);
 
-        if (!ficheroEntrada.exists()) {
-            System.out.println("El archivo de entrada no existe.");
-            return;
-        }
+        do {
+            System.out.print("Nombre del archivo de entrada (tiene que estar en 'src/ficheros/'): ");
+            archivoEntrada = scan.nextLine();
+
+            ficheroEntrada = new File("src/ficheros/" + archivoEntrada);
+
+            if (!ficheroEntrada.exists()) {
+                System.out.println("El archivo no existe. Inténtalo de nuevo.");
+            }
+
+        } while (!ficheroEntrada.exists());
 
         // Abrimos el archivo para leerlo
         // ALTERNATIVA: FileReader lector = new FileReader("entrada.txt");
